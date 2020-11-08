@@ -3,5 +3,6 @@ parameters:
   excludes_analyse:
     - */tests/*
     - */phpunit-autoload.php
+    - */phpunit-bootstrap.php
 includes:
   - /var/www/html/phpstan.neon
