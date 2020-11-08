@@ -1,0 +1,35 @@
+---
+services:
+  watchdog_watchdog:
+    class: Drupal\watchdog_watchdog\WWatchdog
+    arguments:
+      - '@watchdog_watchdog.plugin_collection'
+      - '@state'
+      - '@watchdog_watchdog.event_factory'
+  plugin.manager.watchdog_watchdog:
+    class: Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginManager
+    parent: default_plugin_manager
+  logger.watchdog_watchdog:
+    class: Drupal\watchdog_watchdog\Logger\WWatchdogLogger
+    arguments:
+      - '@watchdog_watchdog'
+    tags:
+      - {name: logger}
+  watchdog_watchdog.self_tester:
+    class: Drupal\watchdog_watchdog\Utilities\SelfTester
+    arguments:
+      - '@watchdog_watchdog'
+  watchdog_watchdog.plugin_collection:
+    class: Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection
+    arguments:
+      - '@plugin.manager.watchdog_watchdog'
+      - '@messenger'
+  watchdog_watchdog.event_factory:
+    class: Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventFactory
+    arguments:
+      - '@watchdog_watchdog.plugin_collection'
+      - '@datetime.time'
+  watchdog_watchdog.form:
+    class: Drupal\watchdog_watchdog\WWatchdogAdminForm
+    arguments:
+      - '@watchdog_watchdog'

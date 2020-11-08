@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Runtime hooks.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\watchdog_watchdog\WWatchdog;
+
+/**
+ * Quick access to the watchdog_watchdog service, useful for debugging.
+ *
+ * @return \Drupal\watchdog_watchdog\WWatchdog
+ *   The WWatchdog service.
+ */
+function watchdog_watchdog() : WWatchdog {
+  return \Drupal::service('watchdog_watchdog');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function watchdog_watchdog_form_system_logging_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+  \Drupal::service('watchdog_watchdog.form')->alter($form, $form_state);
+}
+
+/**
+ * Submit handler for the "system_logging_settings" form.
+ *
+ * @param array $form
+ *   The form object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function watchdog_watchdog_submit_handler(array $form, FormStateInterface $form_state) {
+  \Drupal::service('watchdog_watchdog.form')->submit($form, $form_state);
+}
+
+/**
+ * Validation handler for the "system_logging_settings" form.
+ *
+ * @param array $form
+ *   The form object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function watchdog_watchdog_validation_handler(array $form, FormStateInterface $form_state) {
+  \Drupal::service('watchdog_watchdog.form')->validate($form, $form_state);
+}

@@ -1,0 +1,11 @@
+---
+name: Watchdog Watchdog Severity
+type: module
+description: >-
+  Extend Watchdog Watchdog by allowing administrators specify which severity of
+  watchdog entries trigger a requirements error.
+core: '8.x'
+core_version_requirement: ^8 || ^9
+php: '7.x'
+dependencies:
+  - watchdog_watchdog:watchdog_watchdog
