@@ -3,16 +3,15 @@
 namespace Drupal\Tests\watchdog_watchdog_severity\Unit\Plugin\WWatchdogPlugin;
 
 use Drupal\watchdog_watchdog_severity\Plugin\WWatchdogPlugin\SeverityLevel;
-use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 use Drupal\watchdog_watchdog_severity\WWatchdogSeverityInterface;
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
 
 /**
  * Test SeverityLevel.
  *
  * @group watchdog_watchdog
  */
-class SeverityLevelTest extends TestCase {
+class SeverityLevelTest extends WWatchdogTestBase {
 
   /**
    * Test for triggersError().
@@ -49,15 +48,7 @@ class SeverityLevelTest extends TestCase {
       // @codingStandardsIgnoreEnd
 
     $output = $previous;
-    // @codingStandardsIgnoreStart
-    $opinion = FALSE;
-    $object->triggersError(new class implements WWatchdogEventInterface {
-      public function severityLevel() : int {
-        // Ignored in this test.
-        return 0;
-      }
-    }, $output);
-    // @codingStandardsIgnoreEnd
+    $object->triggersError($this->mockEvent(), $output);
 
     if ($output != $expected) {
       print_r([

@@ -11,7 +11,7 @@ echo " => Uninstalling watchdog_watchdog_severity"
 docker-compose exec drupal /bin/bash -c 'drush pmu -y watchdog_watchdog_severity'
 
 echo " => Uninstalling watchdog_watchdog"
-docker-compose exec drupal /bin/bash -c 'drush pmu -y watchdog_watchdog_ignore'
+docker-compose exec drupal /bin/bash -c 'drush pmu -y watchdog_watchdog'
 
 echo " => Done running self-tests. All WWatchdog modules should be uninstalled."
 echo " =>"

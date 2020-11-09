@@ -3,10 +3,22 @@
 namespace Drupal\Tests\watchdog_watchdog\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventBase;
+use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 
 /**
  * Base class for testing.
  */
 class WWatchdogTestBase extends TestCase {
+
+  /**
+   * Get dummy (mock) event.
+   *
+   * @return \Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface
+   *   A dummy (mock) event.
+   */
+  public function mockEvent() : WWatchdogEventInterface {
+    return new WWatchdogEventBase([], 0);
+  }
 
 }

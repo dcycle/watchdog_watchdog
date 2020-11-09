@@ -18,6 +18,10 @@ namespace Drupal\Core\Cache {
   class CacheableMetadata {}
 }
 
+namespace Drupal\Core\Plugin {
+  interface ContainerFactoryPluginInterface {}
+}
+
 namespace Drupal\Core\Messenger {
   trait MessengerTrait {}
 }

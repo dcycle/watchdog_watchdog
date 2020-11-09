@@ -44,8 +44,8 @@ class SelfTester {
   public function selfTest() {
     $this->print('Starting self-test');
     $num_plugins = count($this->wWatchdog->plugins()->plugins());
-    if ($num_plugins != 3) {
-      $this->print('Error: we expect to have three plugins, we have ' . $num_plugins);
+    if ($num_plugins != 1) {
+      $this->print('Error: we expect to have 1 plugin, we have ' . $num_plugins);
       exit(1);
     }
     $this->print('Ending self-test');

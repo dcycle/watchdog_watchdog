@@ -17,11 +17,6 @@ abstract class WWatchdogPluginBase extends PluginBase implements WWatchdogPlugin
   /**
    * {@inheritdoc}
    */
-  public function alter(WWatchdogEventInterface $info) {}
-
-  /**
-   * {@inheritdoc}
-   */
   public function alterEvent(WWatchdogEventInterface $event) {}
 
   /**
@@ -38,11 +33,6 @@ abstract class WWatchdogPluginBase extends PluginBase implements WWatchdogPlugin
    * {@inheritdoc}
    */
   public function formValidate(array $form, FormStateInterface $form_state) {}
-
-  /**
-   * {@inheritdoc}
-   */
-  public function triggersError(WWatchdogEventInterface $event, bool &$opinion) {}
 
   /**
    * {@inheritdoc}

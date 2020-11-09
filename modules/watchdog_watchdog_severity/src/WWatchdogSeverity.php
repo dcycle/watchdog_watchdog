@@ -8,7 +8,7 @@ use Drupal\watchdog_watchdog\WWatchdog;
 /**
  * Service. Use \Drupal::service('watchdog_watchdog_severity').
  */
-class WWatchdogSeverity {
+class WWatchdogSeverity implements WWatchdogSeverityInterface {
 
   /**
    * The Drupal state variable used for max severity.

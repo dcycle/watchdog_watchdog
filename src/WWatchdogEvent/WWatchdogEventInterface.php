@@ -46,6 +46,7 @@ interface WWatchdogEventInterface {
    *   Translated value of this event.
    */
   public function requirementsValue() : string;
+
   /**
    * Return a severity level, lower is worse.
    *

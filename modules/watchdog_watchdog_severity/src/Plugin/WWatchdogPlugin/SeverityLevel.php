@@ -2,6 +2,7 @@
 
 namespace Drupal\watchdog_watchdog_severity\Plugin\WWatchdogPlugin;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginBase;
 use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 use Drupal\watchdog_watchdog_severity\WWatchdogSeverityInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   weight = 1,
  * )
  */
-class SeverityLevel extends WWatchdogPluginBase {
+class SeverityLevel extends WWatchdogPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The WWatchdogSeverity injected service.
@@ -28,21 +29,28 @@ class SeverityLevel extends WWatchdogPluginBase {
   /**
    * Class constructor.
    *
+   * @param array $configuration
+   *   See https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/dependency-injection-in-plugin-block.
+   * @param string $plugin_id
+   *   See https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/dependency-injection-in-plugin-block.
+   * @param mixed $plugin_definition
+   *   See https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/dependency-injection-in-plugin-block.
    * @param \Drupal\watchdog_watchdog_severity\WWatchdogSeverityInterface $wWatchdogSeverity
    *   The WWatchdogSeverity service.
    */
-  public function __construct(WWatchdogSeverityInterface $wWatchdogSeverity) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, WWatchdogSeverityInterface $wWatchdogSeverity) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->wWatchdogSeverity = $wWatchdogSeverity;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    // Instantiates this form class.
-    // @phpstan-ignore-next-line
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      // Load the service required to construct this class.
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
       $container->get('watchdog_watchdog_severity')
     );
   }
