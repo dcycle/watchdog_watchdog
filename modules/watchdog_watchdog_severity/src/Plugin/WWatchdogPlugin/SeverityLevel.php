@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   weight = 1,
  * )
  */
-final class SeverityLevel extends WWatchdogPluginBase implements ContainerFactoryPluginInterface {
+class SeverityLevel extends WWatchdogPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The WWatchdogSeverity injected service.
@@ -38,7 +38,7 @@ final class SeverityLevel extends WWatchdogPluginBase implements ContainerFactor
    * @param \Drupal\watchdog_watchdog_severity\WWatchdogSeverityInterface $wWatchdogSeverity
    *   The WWatchdogSeverity service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, WWatchdogSeverityInterface $wWatchdogSeverity) {
+  final public function __construct(array $configuration, $plugin_id, $plugin_definition, WWatchdogSeverityInterface $wWatchdogSeverity) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->wWatchdogSeverity = $wWatchdogSeverity;
   }
