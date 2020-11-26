@@ -28,7 +28,7 @@ docker-compose -f docker-compose.base.yml -f docker-compose.drupal"$DRUPALVERSIO
 echo ''
 echo '-----'
 echo 'Running the deploy scripts on the container.'
-docker-compose exec drupal /bin/bash -c 'cd ./modules/custom/watchdog_watchdog/scripts/lib/docker-resources && ./deploy.sh'
+docker-compose exec -T drupal /bin/bash -c 'cd ./modules/custom/watchdog_watchdog/scripts/lib/docker-resources && ./deploy.sh'
 
 echo ''
 echo '-----'
