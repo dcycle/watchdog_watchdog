@@ -30,6 +30,6 @@ services:
       - '@watchdog_watchdog.plugin_collection'
       - '@datetime.time'
   watchdog_watchdog.form:
-    class: Drupal\watchdog_watchdog\WWatchdogAdminForm
+    class: Drupal\watchdog_watchdog\WWatchdogAdminForm\WWatchdogAdminForm
     arguments:
       - '@watchdog_watchdog'
