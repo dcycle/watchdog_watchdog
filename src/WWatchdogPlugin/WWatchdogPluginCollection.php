@@ -11,7 +11,7 @@ use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 /**
  * Abstraction around a collection of plugins.
  */
-class WWatchdogPluginCollection implements WWatchdogPluginInterface {
+class WWatchdogPluginCollection implements WWatchdogPluginInterface, \Countable {
 
   use StringTranslationTrait;
 
@@ -54,6 +54,13 @@ class WWatchdogPluginCollection implements WWatchdogPluginInterface {
    */
   public function alterEvent(WWatchdogEventInterface $event) {
     $this->callOnPlugins('alterEvent', [$event]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function count() {
+    return count($this->plugins());
   }
 
   /**
@@ -174,7 +181,7 @@ class WWatchdogPluginCollection implements WWatchdogPluginInterface {
    * {@inheritdoc}
    */
   public function triggersError(WWatchdogEventInterface $event, bool &$opinion) {
-    $this->callOnPlugins('triggersError', [$event, $opinion]);
+    $this->callOnPlugins('triggersError', [$event, &$opinion]);
   }
 
 }

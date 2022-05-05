@@ -97,7 +97,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsSeverity() : int {
-    return REQUIREMENT_ERROR;
+    return REQUIREMENT_INFO;
   }
 
   /**

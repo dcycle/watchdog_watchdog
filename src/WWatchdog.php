@@ -99,8 +99,6 @@ class WWatchdog {
 
       $event = $this->wWatchdogEventFactory->fromSystemEvent($level, $message, $context);
 
-      $this->plugins()->triggersError($event, $triggers_error);
-
       $triggers_error = FALSE;
 
       $this->plugins()->triggersError($event, $triggers_error);

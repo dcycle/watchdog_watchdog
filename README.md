@@ -3,9 +3,9 @@
 Watchdog Watchdog
 =====
 
-The Watchdog watches you Drupal environment, but who watches the Watchdog? This module, the Watchdog Watchdog, is meant to ensure that any logged errors or warnings (unless those you'd like to ignore) translate as a big red warning on the /admin/reports/status page. You can then monitor that page manually, or automatically using a tool such as [Expose Status](https://drupal.org/project/watchdog_watchdog).
+The Watchdog watches your Drupal environment, but who watches the Watchdog? This module, the Watchdog Watchdog, is meant to ensure that any logged errors or warnings (unless those you'd like to ignore) translate as a big red warning on the /admin/reports/status page. You can then monitor that page manually, or automatically using a tool such as [Expose Status](https://drupal.org/project/expose_status).
 
-OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term Watchdog :)
+OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term "Watchdog" to the term "Logger".
 
 Typical usage
 -----
@@ -14,11 +14,11 @@ Typical usage
 
 (2) visit /admin/reports/status.
 
-(3) the Watchdog Watchdog section should be green and state something like: "no warnings or errors logged since (date)"
+(3) the Watchdog Watchdog section should be green and state something like: "Nothing to report"
 
-(4) log a dummy error using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "watchdog_exception('something', new \Exception('hello'));"`
+(4) log two dummy errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "watchdog_exception('something', new \Exception('hello'));"`
 
-(5) Go back to /admin/reports/status, and this time the Watchdog Watchdog section will display an error stating: 'At least one error was logged since (date): Hello, this is an error!'
+(5) Go back to /admin/reports/status, and this time the Watchdog Watchdog section will display an error stating: 'At least one error was logged since (date): Hello, this is an error!' (Notice that watchdog_watchdog only logs the first in a series of errors)
 
 (6) If this were a real problem with your environment, you would then fix it, and return to the Watchdog Watchdog section of /admin/reports/status and click "reset" which will set the Watchdog Watchdog line to green again until the next error or warning appears
 
