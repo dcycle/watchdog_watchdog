@@ -24,4 +24,11 @@ class WWatchdogEventSystem extends WWatchdogEventBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function severityLevel() : int {
+    return $this->toArray()['level'];
+  }
+
 }

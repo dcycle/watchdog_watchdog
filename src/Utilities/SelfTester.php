@@ -43,7 +43,7 @@ class SelfTester {
    */
   public function selfTest() {
     $this->print('Starting self-test');
-    $num_plugins = count($this->wWatchdog->plugins();
+    $num_plugins = count($this->wWatchdog->plugins());
     $expecting = 2;
     if ($num_plugins != $expecting) {
       $this->print('Error: we expect to have $expecting plugin, we have ' . $num_plugins);

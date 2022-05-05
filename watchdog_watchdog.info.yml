@@ -2,6 +2,5 @@
 name: Watchdog Watchdog
 type: module
 description: Watch the Watchdog.
-core: 8.x
-core_version_requirement: ^8 || ^9
-php: '7.x'
+core_version_requirement: ^9
+php: '8.x'

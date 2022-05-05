@@ -181,7 +181,7 @@ class WWatchdogPluginCollection implements WWatchdogPluginInterface, \Countable 
    * {@inheritdoc}
    */
   public function triggersError(WWatchdogEventInterface $event, bool &$opinion) {
-    $this->callOnPlugins('triggersError', [$event, $opinion]);
+    $this->callOnPlugins('triggersError', [$event, &$opinion]);
   }
 
 }

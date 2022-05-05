@@ -12,7 +12,6 @@ use Drupal\watchdog_watchdog\Annotation\WWatchdogPluginAnnotation;
  */
 // See https://github.com/mglaman/phpstan-drupal/issues/113
 // @codingStandardsIgnoreStart
-// @phpstan-ignore-next-line
 class WWatchdogPluginManager extends DefaultPluginManager {
 // @codingStandardsIgnoreEnd
 

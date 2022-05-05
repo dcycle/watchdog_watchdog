@@ -2,10 +2,8 @@
 
 namespace Drupal\watchdog_watchdog\Plugin\WWatchdogPlugin;
 
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginBase;
 use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginBase;
 
 /**
  * Allows users to filter by severity level.
@@ -18,13 +16,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class WWatchdogBaseCase extends WWatchdogPluginBase {
 
+  const ERROR_SEVERITY = 3;
+
   /**
    * {@inheritdoc}
    */
   public function triggersError(WWatchdogEventInterface $event, bool &$opinion) {
-    print_r('hello');
-    print_r($event);
-    // $this->wWatchdogSeverity()->severityMatches($event->severityLevel(), $opinion);
+    $opinion = $event->severityLevel() <= self::ERROR_SEVERITY;
   }
 
 }
