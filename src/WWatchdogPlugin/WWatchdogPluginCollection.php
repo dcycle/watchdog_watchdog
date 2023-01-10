@@ -59,7 +59,7 @@ class WWatchdogPluginCollection implements WWatchdogPluginInterface, \Countable 
   /**
    * {@inheritdoc}
    */
-  public function count() {
+  public function count() : int {
     return count($this->plugins());
   }
 
