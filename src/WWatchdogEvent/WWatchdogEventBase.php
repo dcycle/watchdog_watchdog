@@ -5,6 +5,7 @@ namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\watchdog_watchdog\Utilities\FriendTrait;
 use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
+use Drupal\Component\Render\FormattableMarkup;;
 
 /**
  * Represents a watchdog event.
@@ -97,14 +98,57 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsSeverity() : int {
-    return REQUIREMENT_INFO;
+    return $this->requirementSeverityStringToInt('REQUIREMENT_INFO');
+  }
+
+  /**
+   * Return the severity level.
+   *
+   * In some cases REQUIREMENT_INFO is not defined, for example, if you
+   * call drush ev "watchdog_watchdog()->hookRequirements();", so
+   * we can are using mapping from
+   * https://api.drupal.org/api/drupal/core%21includes%21install.inc/10.
+   *
+   * @param string $level
+   *   A severity such as 'REQUIREMENT_INFO', or 'REQUIREMENT_OK'.
+   *
+   * @return int
+   *   The corresponding severity level as an int.
+   */
+  public function requirementSeverityStringToInt(string $level) : int {
+    switch ($level) {
+      case 'REQUIREMENT_ERROR':
+        return 2;
+      case 'REQUIREMENT_INFO':
+        return -1;
+      case 'REQUIREMENT_OK':
+        return 0;
+      case 'REQUIREMENT_WARNING':
+        return 1;
+      default:
+        throw new \Exception('Unknown requirement severity string ' . $level);
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function requirementsValue() : string {
-    return $this->t('Nothing to report');
+    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->extractArray('context'), []);
+  }
+
+  public function extractString(string $key, string $default = '') : string {
+    return $this->extract($key, $default);
+  }
+
+  public function extractArray(string $key, array $default = []) : array {
+    return $this->extract($key, $default);
+  }
+
+  public function extract(string $key, $default) {
+    $array = $this->toArray();
+
+    return array_key_exists($key, $array) ? $array[$key] : $default;
   }
 
   /**

@@ -33,8 +33,7 @@ class WWatchdogLogger implements LoggerInterface {
   /**
    * {@inheritdoc}
    */
-  public function log($level, $message, array $context = []) {
-    print_r('hello world' . PHP_EOL);
+  public function log($level, \Stringable|string $message, array $context = []) : void {
     $this->wWatchdog->intercept($level, $message, $context);
   }
 

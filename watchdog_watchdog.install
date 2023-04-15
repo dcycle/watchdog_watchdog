@@ -17,7 +17,7 @@ function watchdog_watchdog_requirements(string $phase) : array {
     // (There are none at the time of this writing.)
     return [];
   }
-  return \Drupal::service('watchdog_watchdog')->hookRequirements($phase);
+  return \Drupal::service('watchdog_watchdog')->hookRequirements();
 }
 
 /**

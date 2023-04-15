@@ -66,7 +66,7 @@ class WWatchdog {
   /**
    * Testable implementation of hook_requirements().
    */
-  public function hookRequirements(string $phase) : array {
+  public function hookRequirements() : array {
     $requirements['watchdog_watchdog'] = [
       'title' => $this->t('Watchdog Watchdog'),
       'description' => $this->lastEvent()->requirementsDescription(),
@@ -96,18 +96,13 @@ class WWatchdog {
       if ($this->tripped()) {
         return;
       }
-      print_r([__LINE__]);
       $event = $this->wWatchdogEventFactory->fromSystemEvent($level, $message, $context);
-      print_r([__LINE__]);
 
       $triggers_error = FALSE;
-      print_r([__LINE__]);
 
       $this->plugins()->triggersError($event, $triggers_error);
-      print_r([__LINE__]);
 
       if ($triggers_error) {
-        print_r([__LINE__]);
         $this->trip($event);
       }
     }

@@ -16,7 +16,7 @@ Typical usage
 
 (3) the Watchdog Watchdog section should be green and state something like: "Nothing to report"
 
-(4) log two dummy errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "watchdog_exception('something', new \Exception('hello'));"`
+(4) log two dummy errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "\Drupal::logger('just_testing')->error('%type: @message in %function (line %line of %file).', \Drupal\Core\Utility\Error::decodeException(new \Exception('hello')));"` (the latter being [the standard way of logging an exception](https://www.drupal.org/node/2932520))
 
 (5) Go back to /admin/reports/status, and this time the Watchdog Watchdog section will display an error stating: 'At least one error was logged since (date): Hello, this is an error!' (Notice that watchdog_watchdog only logs the first in a series of errors)
 
