@@ -5,7 +5,7 @@ Watchdog Watchdog
 
 The Watchdog watches your Drupal environment, but who watches the Watchdog? This module, the Watchdog Watchdog, is meant to ensure that any logged errors or warnings (unless those you'd like to ignore) translate as a big red warning on the /admin/reports/status page. You can then monitor that page manually, or automatically using a tool such as [Expose Status](https://drupal.org/project/expose_status).
 
-OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term "Watchdog" to the term "Logger".
+OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term "Watchdog" to the term "Logger", so I'll use it.
 
 Typical usage
 -----
