@@ -14,11 +14,4 @@ class WWatchdogEventNoEvent extends WWatchdogEventBase {
     return FALSE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function requirementsSeverity() : int {
-    return $this->requirementSeverityStringToInt('REQUIREMENT_OK');
-  }
-
 }

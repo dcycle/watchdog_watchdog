@@ -5,8 +5,8 @@ namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\watchdog_watchdog\Utilities\FriendTrait;
 use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
-use Drupal\Component\Render\FormattableMarkup;;
-
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 /**
  * Represents a watchdog event.
  */
@@ -14,6 +14,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
 
   use FriendTrait;
   use StringTranslationTrait;
+  use DependencyInjectionTrait;
 
   /**
    * The timestamp of this event.
@@ -98,7 +99,9 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsSeverity() : int {
-    return $this->requirementSeverityStringToInt('REQUIREMENT_INFO');
+    $triggersError = FALSE;
+    $this->wWatchdog()->plugins()->triggersError($this, $triggersError)
+    return $this->requirementSeverityStringToInt($triggersError ? 'REQUIREMENT_ERROR' : 'REQUIREMENT_OK');
   }
 
   /**
@@ -134,7 +137,28 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsValue() : string {
-    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->extractArray('context'), []);
+    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->requirementsContext(), []);
+  }
+
+  public function requirementsContext() : array {
+    $modifiedContext = $fullContext = $this->extractArray('context');
+
+    foreach ([
+      'severity_level',
+      'backtrace',
+      'exception',
+      'channel',
+      'link',
+      'uid',
+      'request_uri',
+      'referer',
+      'ip',
+      'timestamp',
+    ] as $key) {
+      unset($modifiedContext[$key]);
+    }
+
+    return $modifiedContext;
   }
 
   public function extractString(string $key, string $default = '') : string {
