@@ -58,22 +58,10 @@ Levels
 *     [13] => ip
 *     [14] => timestamp
 
-
-Only fail on errors, not warnings
------
-
-By default both warnings (level 1) and errors (level 2) will trigger a "issues found; please check" status. To only trigger the error above level 1 (to ignore warnings):
-
-(1) enable the included "watchdog_watchdog_severity" module.
-
-(2) visit the URL at example.com/admin/reports/status/expose/*****?severity=1
-
-Note that the submodules (ignore, severity, details) can be combined.
-
 Extending this module
 -----
 
-This module can be extended via the Drupal plugin system. Developers are encouraged to examine the structure of the included watchdog_watchdog_severity submodule as a basis for their own extensions. Suggestions for more modules are welcome via the Drupal issue queue.
+This module can be extended via the Drupal plugin system. Developers are encouraged to examine the structure of the included files in ./src/plugins/* which can be used as a base for their own plugins.
 
 Local development
 -----

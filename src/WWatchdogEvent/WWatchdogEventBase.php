@@ -7,6 +7,7 @@ use Drupal\watchdog_watchdog\Utilities\FriendTrait;
 use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
+
 /**
  * Represents a watchdog event.
  */
@@ -100,7 +101,11 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    */
   public function requirementsSeverity() : int {
     $triggersError = FALSE;
-    $this->wWatchdog()->plugins()->triggersError($this, $triggersError)
+    $this->wWatchdog()->plugins()->triggersError($this, $triggersError);
+    // In PHPStan, getting "Ternary operator condition is always false.",
+    // although this does not seem to be the case, given that we let plugins
+    // manipulate the $triggersError variable.
+    // @phpstan-ignore-next-line
     return $this->requirementSeverityStringToInt($triggersError ? 'REQUIREMENT_ERROR' : 'REQUIREMENT_OK');
   }
 
@@ -122,12 +127,16 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
     switch ($level) {
       case 'REQUIREMENT_ERROR':
         return 2;
+
       case 'REQUIREMENT_INFO':
         return -1;
+
       case 'REQUIREMENT_OK':
         return 0;
+
       case 'REQUIREMENT_WARNING':
         return 1;
+
       default:
         throw new \Exception('Unknown requirement severity string ' . $level);
     }
@@ -137,9 +146,28 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsValue() : string {
-    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->requirementsContext(), []);
+    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->requirementsContext());
   }
 
+  /**
+   * Get the context for parsing a string for the requireents.
+   *
+   * The context is the array of replacement strings for the error description.
+   * For example, '%line' in the exception string might be replaced with the
+   * actual line in which the error occurred. Exceptions provide extra info
+   * in the context which is not used in the base string, for example,
+   * 'severity_level' exists in the context, but it is not used to replace
+   * anything in the base string. If used as is, the context will result in
+   * warnings such as:
+   *
+   * Invalid placeholder (severity_level) with string.
+   *
+   * This method cleans up the context to remove keys which are not used, thus
+   * avoiding such warnings.
+   *
+   * @return array
+   *   The context, cleaned up and ready for use with requirements.
+   */
   public function requirementsContext() : array {
     $modifiedContext = $fullContext = $this->extractArray('context');
 
@@ -161,14 +189,34 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
     return $modifiedContext;
   }
 
+  /**
+   * Like ::extract(), but when you know the value is a string.
+   */
   public function extractString(string $key, string $default = '') : string {
     return $this->extract($key, $default);
   }
 
+  /**
+   * Like ::extract(), but when you know the value is an array.
+   */
   public function extractArray(string $key, array $default = []) : array {
     return $this->extract($key, $default);
   }
 
+  /**
+   * Extract a value from a key in the array representation of this event.
+   *
+   * Events are stored as arrays in the database; when rebuilding an event from
+   * its array representation, we can then extract values from array keys.
+   *
+   * @param string $key
+   *   An array key whose value to extract.
+   * @param mixed $default
+   *   The default value to use if the key is not available.
+   *
+   * @return mixed
+   *   The value, or default.
+   */
   public function extract(string $key, $default) {
     $array = $this->toArray();
 

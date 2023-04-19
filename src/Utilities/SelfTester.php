@@ -21,7 +21,7 @@ class SelfTester {
   /**
    * Logger Factory.
    *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
    */
   protected $loggerFactory;
 
@@ -30,7 +30,7 @@ class SelfTester {
    *
    * @param \Drupal\watchdog_watchdog\WWatchdog $wWatchdog
    *   The injected watchdog_watchdog service.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
    *   The injected loggerFactory.
    */
   public function __construct(WWatchdog $wWatchdog, LoggerChannelFactoryInterface $loggerFactory) {
@@ -56,9 +56,9 @@ class SelfTester {
   public function selfTest() {
     $this->print('Starting self-test');
     $num_plugins = count($this->wWatchdog->plugins());
-    $expecting = 2;
+    $expecting = 1;
     if ($num_plugins != $expecting) {
-      $this->print('Error: we expect to have $expecting plugin, we have ' . $num_plugins);
+      $this->print('Error: we expect to have ' . $expecting . ' plugin, we have ' . $num_plugins);
       exit(1);
     }
 
@@ -73,12 +73,24 @@ class SelfTester {
     $this->print('Ending self-test');
   }
 
+  /**
+   * Make sure the requirements appear as expected, then reset.
+   */
   public function assertAndReset() {
     $this->print($this->requirements());
     $this->wWatchdog->reset();
   }
 
-  public function requirements() {
+  /**
+   * Get the requirements.
+   *
+   * Use strings instead of markup elements, so we can print them to the
+   * console.
+   *
+   * @return array
+   *   The requirements as an array.
+   */
+  public function requirements() : array {
     $candidate = $this->wWatchdog->hookRequirements();
 
     foreach (['title', 'description', 'value'] as $key) {
@@ -88,11 +100,17 @@ class SelfTester {
     return $candidate;
   }
 
+  /**
+   * Self test the system with an error.
+   */
   public function tryWithError() {
     $this->loggerFactory->error('Hello, this is an error.');
     $this->assertAndReset();
   }
 
+  /**
+   * Self test the system with an exception.
+   */
   public function tryWithException() {
     $decoded = Error::decodeException(new \Exception('hello, this is an exception.'));
     $this->loggerFactory->error('%type: @message in %function (line %line of %file).', $decoded);
