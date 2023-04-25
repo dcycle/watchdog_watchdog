@@ -4,5 +4,7 @@ parameters:
     - */tests/*
     - */phpunit-autoload.php
     - */phpunit-bootstrap.php
+    # See https://github.com/phpstan/phpstan/issues/9229
+    - */WWatchdogLogger.php
 includes:
   - /var/www/html/phpstan.neon

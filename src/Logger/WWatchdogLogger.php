@@ -11,6 +11,8 @@ use Psr\Log\LoggerInterface;
  *
  * The whole version_compare nonsense is due to
  * https://www.drupal.org/project/drupal/issues/3354316#comment-15017566.
+ * This is ignored by PHPStan in ./scripts/lib/phpstan-drupal/phpstan.neon due
+ * to https://github.com/phpstan/phpstan/issues/9229.
  */
 // @codingStandardsIgnoreStart
 // https://www.drupal.org/project/drupal/issues/3354316.
@@ -55,7 +57,6 @@ if (version_compare(\Drupal::VERSION, '10', '>=')) {
     /**
      * {@inheritdoc}
      */
-    // @phpstan-ignore-next-line
     public function log($level, string|\Stringable $message, array $context = []): void {
       $this->logCommonD9andD10($level, $message, $context);
     }
