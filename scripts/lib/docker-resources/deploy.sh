@@ -23,8 +23,7 @@ drush si -y --db-url "mysql://root:drupal@mysql/drupal" minimal
 cat /var/www/html/modules/custom/watchdog_watchdog/scripts/lib/docker-resources/dev-settings.txt >> /var/www/html/sites/default/settings.php
 
 drush en -y \
-  watchdog_watchdog \
-  watchdog_watchdog_severity
+  watchdog_watchdog
 
 mkdir -p /var/www/html/sites/default/files
 chown -R www-data:www-data /var/www/html/sites/default/files

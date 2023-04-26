@@ -13,4 +13,4 @@ echo '=> Unit tests.'
 ./scripts/php-unit.sh
 
 echo '=> Static analysis'
-./scripts/php-static-analysis.sh
+./scripts/static.sh

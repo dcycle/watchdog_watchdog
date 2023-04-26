@@ -16,17 +16,6 @@ class WWatchdog {
   use StringTranslationTrait;
 
   /**
-   * The log level below which we want to trigger Watchdog Watchdog.
-   *
-   * By default we'll use 5; the module watchdog_watchdog_severity, included
-   * in this package, allows customization of this and provides more info on
-   * what the other levels are.
-   *
-   * @var int
-   */
-  const NOTICE = 5;
-
-  /**
    * The injected State service.
    *
    * @var \Drupal\Core\State\State
@@ -66,7 +55,7 @@ class WWatchdog {
   /**
    * Testable implementation of hook_requirements().
    */
-  public function hookRequirements(string $phase) : array {
+  public function hookRequirements() : array {
     $requirements['watchdog_watchdog'] = [
       'title' => $this->t('Watchdog Watchdog'),
       'description' => $this->lastEvent()->requirementsDescription(),
@@ -96,7 +85,6 @@ class WWatchdog {
       if ($this->tripped()) {
         return;
       }
-
       $event = $this->wWatchdogEventFactory->fromSystemEvent($level, $message, $context);
 
       $triggers_error = FALSE;

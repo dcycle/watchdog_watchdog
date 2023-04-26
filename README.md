@@ -5,7 +5,7 @@ Watchdog Watchdog
 
 The Watchdog watches your Drupal environment, but who watches the Watchdog? This module, the Watchdog Watchdog, is meant to ensure that any logged errors or warnings (unless those you'd like to ignore) translate as a big red warning on the /admin/reports/status page. You can then monitor that page manually, or automatically using a tool such as [Expose Status](https://drupal.org/project/expose_status).
 
-OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term "Watchdog" to the term "Logger".
+OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term "Watchdog" to the term "Logger", so I'll use it.
 
 Typical usage
 -----
@@ -16,7 +16,7 @@ Typical usage
 
 (3) the Watchdog Watchdog section should be green and state something like: "Nothing to report"
 
-(4) log two dummy errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "watchdog_exception('something', new \Exception('hello'));"`
+(4) log two dummy errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "\Drupal::logger('just_testing')->error('%type: @message in %function (line %line of %file).', \Drupal\Core\Utility\Error::decodeException(new \Exception('hello')));"` (the latter being [the standard way of logging an exception](https://www.drupal.org/node/2932520))
 
 (5) Go back to /admin/reports/status, and this time the Watchdog Watchdog section will display an error stating: 'At least one error was logged since (date): Hello, this is an error!' (Notice that watchdog_watchdog only logs the first in a series of errors)
 
@@ -58,22 +58,10 @@ Levels
 *     [13] => ip
 *     [14] => timestamp
 
-
-Only fail on errors, not warnings
------
-
-By default both warnings (level 1) and errors (level 2) will trigger a "issues found; please check" status. To only trigger the error above level 1 (to ignore warnings):
-
-(1) enable the included "watchdog_watchdog_severity" module.
-
-(2) visit the URL at example.com/admin/reports/status/expose/*****?severity=1
-
-Note that the submodules (ignore, severity, details) can be combined.
-
 Extending this module
 -----
 
-This module can be extended via the Drupal plugin system. Developers are encouraged to examine the structure of the included watchdog_watchdog_severity submodule as a basis for their own extensions. Suggestions for more modules are welcome via the Drupal issue queue.
+This module can be extended via the Drupal plugin system. Developers are encouraged to examine the structure of the included files in ./src/plugins/* which can be used as a base for their own plugins.
 
 Local development
 -----

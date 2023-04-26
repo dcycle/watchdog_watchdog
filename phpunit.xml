@@ -4,7 +4,6 @@
   <testsuites>
     <testsuite name="myproject">
       <directory>./tests/src/Unit</directory>
-      <directory>./modules/watchdog_watchdog_severity/tests/src/Unit</directory>
     </testsuite>
   </testsuites>
 </phpunit>

@@ -1,7 +1,0 @@
----
-services:
-  watchdog_watchdog_severity:
-    class: Drupal\watchdog_watchdog_severity\WWatchdogSeverity
-    arguments:
-      - '@watchdog_watchdog'
-      - '@config.factory'

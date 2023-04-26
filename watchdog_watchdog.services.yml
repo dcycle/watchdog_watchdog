@@ -19,6 +19,7 @@ services:
     class: Drupal\watchdog_watchdog\Utilities\SelfTester
     arguments:
       - '@watchdog_watchdog'
+      - '@logger.factory'
   watchdog_watchdog.plugin_collection:
     class: Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection
     arguments:

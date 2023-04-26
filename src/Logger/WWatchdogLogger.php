@@ -8,8 +8,16 @@ use Psr\Log\LoggerInterface;
 
 /**
  * The logger which intercepts system messages.
+ *
+ * The whole version_compare nonsense is due to
+ * https://www.drupal.org/project/drupal/issues/3354316#comment-15017566.
+ * This is ignored by PHPStan in ./scripts/lib/phpstan-drupal/phpstan.neon due
+ * to https://github.com/phpstan/phpstan/issues/9229.
  */
-class WWatchdogLogger implements LoggerInterface {
+// @codingStandardsIgnoreStart
+// https://www.drupal.org/project/drupal/issues/3354316.
+abstract class WWatchdogLoggerD9andD10common implements LoggerInterface {
+// @codingStandardsIgnoreEnd
 
   use RfcLoggerTrait;
 
@@ -31,10 +39,42 @@ class WWatchdogLogger implements LoggerInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * See https://www.drupal.org/project/drupal/issues/3354316.
    */
-  public function log($level, $message, array $context = []) {
+  public function logCommonD9andD10($level, $message, array $context = []) {
     $this->wWatchdog->intercept($level, $message, $context);
   }
 
+}
+
+// https://www.drupal.org/project/drupal/issues/3354316.
+if (version_compare(\Drupal::VERSION, '10', '>=')) {
+  /**
+   * See https://www.drupal.org/project/drupal/issues/3354316.
+   */
+  class WWatchdogLogger extends WWatchdogLoggerD9andD10common {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function log($level, string|\Stringable $message, array $context = []): void {
+      $this->logCommonD9andD10($level, $message, $context);
+    }
+
+  }
+}
+else {
+  /**
+   * See https://www.drupal.org/project/drupal/issues/3354316.
+   */
+  class WWatchdogLogger extends WWatchdogLoggerD9andD10common {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function log($level, $message, array $context = []) {
+      $this->logCommonD9andD10($level, $message, $context);
+    }
+
+  }
 }

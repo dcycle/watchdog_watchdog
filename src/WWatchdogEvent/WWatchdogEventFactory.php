@@ -46,7 +46,7 @@ class WWatchdogEventFactory {
   public function decode(string $encoded) : WWatchdogEventInterface {
     try {
       $decoded = json_decode($encoded, TRUE);
-      return new $decoded['class']($decoded, $decoded['timestamp']);
+      return new $decoded['class']($decoded, intval($decoded['timestamp']));
     }
     catch (\Throwable $t) {
       return $this->fromInternalThrowable($t);

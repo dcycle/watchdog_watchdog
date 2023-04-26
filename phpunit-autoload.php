@@ -15,8 +15,6 @@
 spl_autoload_register(function ($class) {
   $custom_code = [
     'src' => ['watchdog_watchdog'],
-    'modules/watchdog_watchdog_details/src' => ['watchdog_watchdog_details'],
-    'modules/watchdog_watchdog_severity/src' => ['watchdog_watchdog_severity'],
     'tests/src/Unit' => [
       'Tests',
       'watchdog_watchdog',
