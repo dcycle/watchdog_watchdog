@@ -3,9 +3,7 @@
 Watchdog Watchdog
 =====
 
-The Watchdog watches your Drupal environment, but who watches the Watchdog? This module, the Watchdog Watchdog, is meant to ensure that any logged errors or warnings (unless those you'd like to ignore) translate as a big red warning on the /admin/reports/status page. You can then monitor that page manually, or automatically using a tool such as [Expose Status](https://drupal.org/project/expose_status).
-
-OK, the term "watchdog" is [removed in Drupal 8 in favor of "Logger"](https://www.drupal.org/node/2270941), but I prefer the term "Watchdog" to the term "Logger", so I'll use it.
+Monitors any environment and remembers the first error to occur, triggering an error on /admin/reports/status. You can then monitor that page manually, or automatically using a tool such as [Expose Status](https://drupal.org/project/expose_status).
 
 Typical usage
 -----
@@ -16,52 +14,29 @@ Typical usage
 
 (3) the Watchdog Watchdog section should be green and state something like: "Nothing to report"
 
-(4) log two dummy errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "\Drupal::logger('just_testing')->error('%type: @message in %function (line %line of %file).', \Drupal\Core\Utility\Error::decodeException(new \Exception('hello')));"` (the latter being [the standard way of logging an exception](https://www.drupal.org/node/2932520))
+(4) log two mock errors using `drush ev "\Drupal::logger('just_testing')->error('Hello, this is an error');"` and `drush ev "\Drupal::logger('just_testing')->error('%type: @message in %function (line %line of %file).', \Drupal\Core\Utility\Error::decodeException(new \Exception('hello')));"` (the latter being [the standard way of logging an exception](https://www.drupal.org/node/2932520))
 
 (5) Go back to /admin/reports/status, and this time the Watchdog Watchdog section will display an error stating: 'At least one error was logged since (date): Hello, this is an error!' (Notice that watchdog_watchdog only logs the first in a series of errors)
 
-(6) If this were a real problem with your environment, you would then fix it, and return to the Watchdog Watchdog section of /admin/reports/status and click "reset" which will set the Watchdog Watchdog line to green again until the next error or warning appears
+(6) If this were a real problem with your environment, you would then fix it, then reset the system using `drush ev "watchdog_watchdog()->reset();"` and return to the Watchdog Watchdog section of /admin/reports/status to monitor for new errors.
 
-Levels
------
-
-*   * emergency: 0
-*   * alert: 1
-*   * critical: 2
-*   * error: 3
-*   * error: 4
-*   * notice: 5
-*   * info: 6
-*   * debug: 7.
-
-*     [0] => channel
-*     [1] => link
-*     [2] => uid
-*     [3] => request_uri
-*     [4] => referer
-*     [5] => ip
-*     [6] => timestamp
-*   In the latter case our array keys might be:
-*     [0] => %type
-*     [1] => @message
-*     [2] => %function
-*     [3] => %file
-*     [4] => %line
-*     [5] => severity_level
-*     [6] => backtrace
-*     [7] => @backtrace_string
-*     [8] => channel
-*     [9] => link
-*     [10] => uid
-*     [11] => request_uri
-*     [12] => referer
-*     [13] => ip
-*     [14] => timestamp
-
-Extending this module
+Levels and extending this module
 -----
 
 This module can be extended via the Drupal plugin system. Developers are encouraged to examine the structure of the included files in ./src/plugins/* which can be used as a base for their own plugins.
+
+For example, these are the log message severity levels in Drupal:
+
+* emergency: 0
+* alert: 1
+* critical: 2
+* error: 3
+* warning: 4
+* notice: 5
+* info: 6
+* debug: 7
+
+In ./src/Plugin/WWatchdogPlugin/WWatchdogBaseCase.php, Watchdog Watchdog only logs errors that are below level 3. You can define your plugin in a custom module, with a higher weight, if you would like to log different error levels or ignore certain errors.
 
 Local development
 -----
@@ -85,8 +60,3 @@ Unit tests are performed on Drupal.org's infrastructure and in GitHub using Circ
 To run automated tests locally, install Docker and type:
 
     ./scripts/ci.sh
-
-Drupal 9 readiness
------
-
-This project is certified Drupal 9 ready.
