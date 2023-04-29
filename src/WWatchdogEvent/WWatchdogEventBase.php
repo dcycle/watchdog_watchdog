@@ -92,13 +92,6 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   /**
    * {@inheritdoc}
    */
-  public function requirementsDescription() : string {
-    return $this->t('Nothing to report');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function requirementsSeverity() : int {
     $triggersError = FALSE;
     $this->wWatchdog()->plugins()->triggersError($this, $triggersError);

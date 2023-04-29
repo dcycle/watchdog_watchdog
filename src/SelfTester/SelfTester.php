@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\watchdog_watchdog\Utilities;
+namespace Drupal\watchdog_watchdog\SelfTester;
 
 use Drupal\watchdog_watchdog\WWatchdog;
 use Drupal\Core\Utility\Error;
@@ -64,7 +64,7 @@ class SelfTester {
 
     $this->wWatchdog->reset();
 
-    $this->assertAndReset();
+    $this->assertAndReset(new ExpectationNothingToReport());
 
     $this->tryWithError();
 
@@ -75,9 +75,15 @@ class SelfTester {
 
   /**
    * Make sure the requirements appear as expected, then reset.
+   *
+   * @param \Drupal\watchdog_watchdog\SelfTester\ExpectationInterface $expectation
+   *   An expectation of what this requirement should contain.
    */
-  public function assertAndReset() {
-    $this->print($this->requirements());
+  public function assertAndReset(ExpectationInterface $expectation) {
+    $this->print($requirements = $this->requirements());
+    $expectation->check($requirements, function(string $str) {
+      $this->print($str);
+    });
     $this->wWatchdog->reset();
   }
 
@@ -105,7 +111,7 @@ class SelfTester {
    */
   public function tryWithError() {
     $this->loggerFactory->error('Hello, this is an error.');
-    $this->assertAndReset();
+    $this->assertAndReset(new ExpectationError());
   }
 
   /**
@@ -114,7 +120,7 @@ class SelfTester {
   public function tryWithException() {
     $decoded = Error::decodeException(new \Exception('hello, this is an exception.'));
     $this->loggerFactory->error('%type: @message in %function (line %line of %file).', $decoded);
-    $this->assertAndReset();
+    $this->assertAndReset(new ExpectationException());
   }
 
 }

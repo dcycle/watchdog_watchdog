@@ -16,7 +16,7 @@ services:
     tags:
       - {name: logger}
   watchdog_watchdog.self_tester:
-    class: Drupal\watchdog_watchdog\Utilities\SelfTester
+    class: Drupal\watchdog_watchdog\SelfTester\SelfTester
     arguments:
       - '@watchdog_watchdog'
       - '@logger.factory'

@@ -24,14 +24,6 @@ interface WWatchdogEventInterface {
   public function report() : bool;
 
   /**
-   * Get the translated description of this event.
-   *
-   * @return string
-   *   Translated description of this event.
-   */
-  public function requirementsDescription() : string;
-
-  /**
    * Get the severity of this event.
    *
    * @return int
