@@ -70,6 +70,17 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   }
 
   /**
+   * Get the timestamp associated with this event, in human-readable form.
+   *
+   * @return string
+   *   Timestamp associated with this event, in human-readable form.
+   */
+  public function humanTime() : string {
+    $candidate = $this->timestamp();
+    return $candidate ? date("Y-m-d h:i:sa", $candidate) : $this->t('Unknown time');
+  }
+
+  /**
    * Returns validators for each key which should exist in data.
    *
    * @return array
@@ -139,7 +150,12 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsValue() : string {
-    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->requirementsContext());
+    $noErrorString = $this->t('Nothing to report');
+    $candidate = new FormattableMarkup($this->extractString('message', $noErrorString), $this->requirementsContext());
+    if ($candidate != $noErrorString) {
+      $candidate = $this->humanTime() . ' ' . $candidate;
+    }
+    return $candidate;
   }
 
   /**
