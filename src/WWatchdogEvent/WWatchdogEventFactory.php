@@ -4,11 +4,14 @@ namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
 use Drupal\Component\Datetime\Time;
 use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
+use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 
 /**
  * Implements the factory pattern for events.
  */
 class WWatchdogEventFactory {
+
+  use DependencyInjectionTrait;
 
   /**
    * The injected plugins.
@@ -45,12 +48,20 @@ class WWatchdogEventFactory {
    */
   public function decode(string $encoded) : WWatchdogEventInterface {
     try {
-      $decoded = json_decode($encoded, TRUE);
-      return new $decoded['class']($decoded, intval($decoded['timestamp']));
+      return $this->extractorFactory()
+        ->getFromDecoded($this->jsonDecode($encoded, TRUE))
+        ->extract();
     }
     catch (\Throwable $t) {
       return $this->fromInternalThrowable($t);
     }
+  }
+
+  public function jsonDecode(string $encoded) : array {
+    if ($candidate = json_decode($encoded)) {
+      return $candidate;
+    }
+    throw new \Exception('Encoded error is null or is corrupted.');
   }
 
   /**

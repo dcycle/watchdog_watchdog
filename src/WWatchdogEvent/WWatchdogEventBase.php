@@ -230,8 +230,9 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   public function toArray() : array {
     $return = [];
 
+    $return['version'] = '2';
     $return['class'] = get_class($this);
-    $return['timestamp'] = get_class($this);
+    $return['timestamp'] = $this->timestamp();
 
     foreach ($this->dataKeyValidators() as $key => $validate) {
       $return[$key] = $this->$key;
