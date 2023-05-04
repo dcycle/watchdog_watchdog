@@ -49,7 +49,7 @@ class WWatchdogEventFactory {
   public function decode(string $encoded) : WWatchdogEventInterface {
     try {
       return $this->extractorFactory()
-        ->getFromDecoded($this->jsonDecode($encoded, TRUE))
+        ->getFromDecoded($this->jsonDecode($encoded))
         ->extract();
     }
     catch (\Throwable $t) {
@@ -57,8 +57,17 @@ class WWatchdogEventFactory {
     }
   }
 
+  /**
+   * Decode an encoded json struct.
+   *
+   * @param string $encoded
+   *   An encocded json string.
+   *
+   * @return array
+   *   A decoded struct.
+   */
   public function jsonDecode(string $encoded) : array {
-    if ($candidate = json_decode($encoded)) {
+    if ($candidate = json_decode($encoded, TRUE)) {
       return $candidate;
     }
     throw new \Exception('Encoded error is null or is corrupted.');

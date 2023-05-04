@@ -2,15 +2,16 @@
 
 namespace Drupal\watchdog_watchdog\WWatchdogExtractor;
 
-use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
-
 /**
  * Version 2 of the extractor.
  */
-class WWatchdogExtractorV2 extends WWatchdogExtractorV2 {
+class WWatchdogExtractorV2 extends WWatchdogExtractorV1 {
 
+  /**
+   * {@inheritdoc}
+   */
   public function timestamp() : int {
-    return intval($decoded['timestamp']);
+    return intval($this->decoded['timestamp']);
   }
 
 }

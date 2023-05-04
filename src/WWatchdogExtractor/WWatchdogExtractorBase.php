@@ -2,8 +2,6 @@
 
 namespace Drupal\watchdog_watchdog\WWatchdogExtractor;
 
-use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
-
 /**
  * Base class for extractors.
  */

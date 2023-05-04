@@ -9,6 +9,12 @@ use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
  */
 interface WWatchdogExtractorInterface {
 
+  /**
+   * Extract an event from the json struct.
+   *
+   * @return \Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface
+   *   An event.
+   */
   public function extract() : WWatchdogEventInterface;
 
 }
