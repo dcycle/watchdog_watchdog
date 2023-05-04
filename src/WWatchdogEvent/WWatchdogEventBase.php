@@ -3,7 +3,6 @@
 namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\watchdog_watchdog\Utilities\FriendTrait;
 use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
@@ -13,7 +12,6 @@ use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
  */
 class WWatchdogEventBase implements WWatchdogEventInterface {
 
-  use FriendTrait;
   use StringTranslationTrait;
   use DependencyInjectionTrait;
 
@@ -27,8 +25,6 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   /**
    * Constructor.
    *
-   * Only callable by the friend class WWatchdogEventFactory.
-   *
    * @param array $data
    *   Data pertaining to this event. Each event class has a different data
    *   structure, which is closely related to how Drupal manages log data.
@@ -36,14 +32,10 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    *   The current time, as a unix timestamp.
    */
   public function __construct(array $data, int $timestamp) {
-    $this->friendAccess([
-      WWatchdogEventFactory::class,
-      WWatchdogTestBase::class,
-    ]);
     $this->timestamp = $timestamp;
     foreach ($this->dataKeyValidators() as $key => $validate) {
       if (!array_key_exists($key, $data)) {
-        throw new \Exception('Data key ' . $key . ' must exist.');
+        throw new \Exception('Data key ' . $key . ' must exist in ' . json_encode($data) . '.');
       }
       if (!$validate($data[$key])) {
         throw new \Exception('Data value does not validate for ' . $key);

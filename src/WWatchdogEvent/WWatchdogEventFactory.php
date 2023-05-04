@@ -13,6 +13,8 @@ class WWatchdogEventFactory {
 
   use DependencyInjectionTrait;
 
+  const ERROR_LEVEL = 3;
+
   /**
    * The injected plugins.
    *
@@ -85,6 +87,8 @@ class WWatchdogEventFactory {
       'arguments' => [],
       'file' => $t->getFile(),
       'line' => $t->getLine(),
+      'context' => [],
+      'level' => self::ERROR_LEVEL,
     ], $this->time->getRequestTime());
   }
 
