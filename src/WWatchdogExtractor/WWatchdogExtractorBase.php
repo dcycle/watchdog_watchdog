@@ -2,10 +2,14 @@
 
 namespace Drupal\watchdog_watchdog\WWatchdogExtractor;
 
+use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
+
 /**
  * Base class for extractors.
  */
 abstract class WWatchdogExtractorBase implements WWatchdogExtractorInterface {
+
+  use DependencyInjectionTrait;
 
   /**
    * The decoded array.

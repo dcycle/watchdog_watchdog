@@ -10,15 +10,31 @@ use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 class WWatchdogExtractorCorruptedArray extends WWatchdogExtractorBase {
 
   /**
+   * The untranslated string representing the reason why this is corrupted.
+   *
+   * @var string
+   */
+  protected $reason;
+
+  /**
+   * Constructor.
+   *
+   * @param array $decoded
+   *   The decoded array.
+   * @param string $reason
+   *   Untranslated string representing the reason why this is corrupted.
+   */
+  public function __construct(array $decoded, string $reason) {
+    $this->decoded = $decoded;
+    $this->reason = $reason;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function extract() : WWatchdogEventInterface {
-    return new WWatchdogEventThrowable([
-      'message' => $t->getMessage(),
-      'arguments' => [],
-      'file' => $t->getFile(),
-      'line' => $t->getLine(),
-    ], $this->time->getRequestTime());
+    return $this->eventFactory()
+      ->fromInternalThrowable(new \Exception('Watchdog Watchdog could not figure out what to do with the struct representing the latest event because ' . $this->reason));
   }
 
 }

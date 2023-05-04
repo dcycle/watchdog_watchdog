@@ -22,7 +22,7 @@ class WWatchdogExtractorFactory {
         return new WWatchdogExtractorV2($decoded);
 
       default:
-        return new WWatchdogExtractorCorruptedArray($decoded);
+        return new WWatchdogExtractorCorruptedArray($decoded, "the struct's version number, " . $decoded['version'] . ', is unknown to us');
     }
   }
 
