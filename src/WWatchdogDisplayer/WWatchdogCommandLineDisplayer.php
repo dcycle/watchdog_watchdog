@@ -9,9 +9,6 @@ class WWatchdogCommandLineDisplayer extends WWatchdogDisplayer {
 
   /**
    * Print all information about the associated event.
-   *
-   * @param \Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface $event
-   *   The event to be displayed.
    */
   public function printAll() {
     $this->print('************************');

@@ -3,7 +3,6 @@
 namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 

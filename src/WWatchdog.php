@@ -73,7 +73,7 @@ class WWatchdog {
    * Usage: drush ev "watchdog_watchdog()->printLatest();".
    */
   public function printLatest() {
-    $displayer = (new WWatchdogCommandLineDisplayer($this->lastEvent()))
+    (new WWatchdogCommandLineDisplayer($this->lastEvent()))
       ->printAll();
   }
 

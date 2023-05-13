@@ -26,5 +26,4 @@ class WWatchdogDisplayer implements WWatchdogDisplayerInterface {
     $this->event = $event;
   }
 
-
 }
