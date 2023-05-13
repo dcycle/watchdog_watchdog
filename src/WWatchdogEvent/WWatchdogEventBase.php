@@ -3,8 +3,6 @@
 namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\watchdog_watchdog\Utilities\FriendTrait;
-use Drupal\Tests\watchdog_watchdog\Unit\WWatchdogTestBase;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 
@@ -13,7 +11,6 @@ use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
  */
 class WWatchdogEventBase implements WWatchdogEventInterface {
 
-  use FriendTrait;
   use StringTranslationTrait;
   use DependencyInjectionTrait;
 
@@ -27,8 +24,6 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   /**
    * Constructor.
    *
-   * Only callable by the friend class WWatchdogEventFactory.
-   *
    * @param array $data
    *   Data pertaining to this event. Each event class has a different data
    *   structure, which is closely related to how Drupal manages log data.
@@ -36,14 +31,10 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    *   The current time, as a unix timestamp.
    */
   public function __construct(array $data, int $timestamp) {
-    $this->friendAccess([
-      WWatchdogEventFactory::class,
-      WWatchdogTestBase::class,
-    ]);
     $this->timestamp = $timestamp;
     foreach ($this->dataKeyValidators() as $key => $validate) {
       if (!array_key_exists($key, $data)) {
-        throw new \Exception('Data key ' . $key . ' must exist.');
+        throw new \Exception('Data key ' . $key . ' must exist in ' . json_encode($data) . '.');
       }
       if (!$validate($data[$key])) {
         throw new \Exception('Data value does not validate for ' . $key);
@@ -67,6 +58,17 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    */
   public function timestamp() : int {
     return $this->timestamp;
+  }
+
+  /**
+   * Get the timestamp associated with this event, in human-readable form.
+   *
+   * @return string
+   *   Timestamp associated with this event, in human-readable form.
+   */
+  public function humanTime() : string {
+    $candidate = $this->timestamp();
+    return $candidate ? date("Y-m-d h:i:sa", $candidate) : $this->t('Unknown time');
   }
 
   /**
@@ -139,7 +141,12 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    * {@inheritdoc}
    */
   public function requirementsValue() : string {
-    return new FormattableMarkup($this->extractString('message', $this->t('Nothing to report')), $this->requirementsContext());
+    $noErrorString = $this->t('Nothing to report');
+    $candidate = new FormattableMarkup($this->extractString('message', $noErrorString), $this->requirementsContext());
+    if ($candidate != $noErrorString) {
+      $candidate = $this->humanTime() . ' ' . $candidate;
+    }
+    return $candidate;
   }
 
   /**
@@ -230,8 +237,9 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   public function toArray() : array {
     $return = [];
 
+    $return['version'] = '2';
     $return['class'] = get_class($this);
-    $return['timestamp'] = get_class($this);
+    $return['timestamp'] = $this->timestamp();
 
     foreach ($this->dataKeyValidators() as $key => $validate) {
       $return[$key] = $this->$key;

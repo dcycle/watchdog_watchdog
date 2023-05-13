@@ -14,4 +14,18 @@ trait DependencyInjectionTrait {
     return \Drupal::service('watchdog_watchdog');
   }
 
+  /**
+   * Mockable wrapper around the watchdog_watchdog.extractor_factory service.
+   */
+  public function extractorFactory() {
+    return \Drupal::service('watchdog_watchdog.extractor_factory');
+  }
+
+  /**
+   * Mockable wrapper around the watchdog_watchdog.event_factory service.
+   */
+  public function eventFactory() {
+    return \Drupal::service('watchdog_watchdog.event_factory');
+  }
+
 }

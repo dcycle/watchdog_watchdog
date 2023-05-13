@@ -4,11 +4,16 @@ namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
 use Drupal\Component\Datetime\Time;
 use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
+use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 
 /**
  * Implements the factory pattern for events.
  */
 class WWatchdogEventFactory {
+
+  use DependencyInjectionTrait;
+
+  const ERROR_LEVEL = 3;
 
   /**
    * The injected plugins.
@@ -45,12 +50,29 @@ class WWatchdogEventFactory {
    */
   public function decode(string $encoded) : WWatchdogEventInterface {
     try {
-      $decoded = json_decode($encoded, TRUE);
-      return new $decoded['class']($decoded, intval($decoded['timestamp']));
+      return $this->extractorFactory()
+        ->getFromDecoded($this->jsonDecode($encoded))
+        ->extract();
     }
     catch (\Throwable $t) {
       return $this->fromInternalThrowable($t);
     }
+  }
+
+  /**
+   * Decode an encoded json struct.
+   *
+   * @param string $encoded
+   *   An encocded json string.
+   *
+   * @return array
+   *   A decoded struct.
+   */
+  public function jsonDecode(string $encoded) : array {
+    if ($candidate = json_decode($encoded, TRUE)) {
+      return $candidate;
+    }
+    throw new \Exception('Encoded error is null or is corrupted.');
   }
 
   /**
@@ -65,6 +87,8 @@ class WWatchdogEventFactory {
       'arguments' => [],
       'file' => $t->getFile(),
       'line' => $t->getLine(),
+      'context' => [],
+      'level' => self::ERROR_LEVEL,
     ], $this->time->getRequestTime());
   }
 
