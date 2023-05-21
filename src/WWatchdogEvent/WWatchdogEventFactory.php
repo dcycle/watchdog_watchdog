@@ -15,6 +15,8 @@ class WWatchdogEventFactory {
 
   const ERROR_LEVEL = 3;
 
+  const LEVELS_OF_BACKTRACE_USED_BY_LOGGING_MECHANISM = 6;
+
   /**
    * The injected plugins.
    *
@@ -89,7 +91,7 @@ class WWatchdogEventFactory {
       'line' => $t->getLine(),
       'context' => [],
       'level' => self::ERROR_LEVEL,
-    ], $this->time->getRequestTime());
+    ], $this->time->getRequestTime(), $this->backtrace());
   }
 
   /**
@@ -119,9 +121,15 @@ class WWatchdogEventFactory {
     ], $this->time->getRequestTime(), $this->backtrace());
   }
 
+  /**
+   * Get a full backtrace without arguments, exluding the logging mechanism.
+   *
+   * @return array
+   *   A full backtrace without arguments, exluding the logging mechanism.
+   */
   public function backtrace() : array {
     $ret = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-    for ($i = 0; $i < 6; $i++) {
+    for ($i = 0; $i < self::LEVELS_OF_BACKTRACE_USED_BY_LOGGING_MECHANISM; $i++) {
       array_shift($ret);
     }
     return $ret;
@@ -134,7 +142,7 @@ class WWatchdogEventFactory {
    *   A non-event.
    */
   public function noEvent() : WWatchdogEventInterface {
-    return new WWatchdogEventNoEvent([], $this->time->getRequestTime());
+    return new WWatchdogEventNoEvent([], $this->time->getRequestTime(), []);
   }
 
 }

@@ -22,6 +22,13 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   protected $timestamp;
 
   /**
+   * The backtrace for this event.
+   *
+   * @var array
+   */
+  protected $backtrace;
+
+  /**
    * Constructor.
    *
    * @param array $data
@@ -29,9 +36,12 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    *   structure, which is closely related to how Drupal manages log data.
    * @param int $timestamp
    *   The current time, as a unix timestamp.
+   * @param array $backtrace
+   *   The backtrace representated as an array.
    */
-  public function __construct(array $data, int $timestamp) {
+  public function __construct(array $data, int $timestamp, array $backtrace) {
     $this->timestamp = $timestamp;
+    $this->backtrace = $backtrace;
     foreach ($this->dataKeyValidators() as $key => $validate) {
       if (!array_key_exists($key, $data)) {
         throw new \Exception('Data key ' . $key . ' must exist in ' . json_encode($data) . '.');
@@ -238,7 +248,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
    *   The backtrace.
    */
   public function backtrace() : array {
-    return $this->extractArray('backtrace', []);
+    return $this->backtrace;
   }
 
   /**

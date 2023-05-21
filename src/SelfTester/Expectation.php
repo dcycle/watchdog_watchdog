@@ -10,10 +10,40 @@ abstract class Expectation implements ExpectationInterface {
   /**
    * {@inheritdoc}
    */
-  public function check(array $requirements, callable $callback) {
+  public function check(array $requirements, array $backtrace, callable $callback) {
     $this->checkKeyValue($requirements['watchdog_watchdog'], 'severity', '/' . $this->expectedSeverity() . '/', $callback);
+    $this->checkBacktrace($backtrace, $callback);
     $callback('All good, Joe.');
   }
+
+  /**
+   * Make sure the backtrace corresponds to what is expected.
+   *
+   * @param array $backtrace
+   *   A backtrace.
+   * @param callable $callback
+   *   A logging callback.
+   */
+  public function checkBacktrace(array $backtrace, callable $callback) {
+    $first = array_shift($backtrace);
+    if ($expectedCallingFunction = $this->expectedCallingFunction()) {
+      if ($first['function'] != $expectedCallingFunction) {
+        $callback('Calling function is expected to be ' . $expectedCallingFunction . ' but is ' . $first['function']);
+        die();
+      }
+      else {
+        $callback('Calling function matches ' . $expectedCallingFunction . ' as expected.');
+      }
+    }
+  }
+
+  /**
+   * Get the expected name of the calling function, if any.
+   *
+   * @return string
+   *   Expected name of the calling function, if any.
+   */
+  abstract public function expectedCallingFunction() : string;
 
   /**
    * Check that a key has a specific value.

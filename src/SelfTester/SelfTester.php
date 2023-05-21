@@ -81,7 +81,7 @@ class SelfTester {
    */
   public function assertAndReset(ExpectationInterface $expectation) {
     $this->print($requirements = $this->requirements());
-    $expectation->check($requirements, function (string $str) {
+    $expectation->check($requirements, $this->wWatchdog->lastEvent()->backtrace(), function (string $str) {
       $this->print($str);
     });
     $this->wWatchdog->reset();
