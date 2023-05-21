@@ -21,6 +21,9 @@ class WWatchdogExtractorFactory {
       case '2':
         return new WWatchdogExtractorV2($decoded);
 
+      case '3':
+        return new WWatchdogExtractorV3($decoded);
+
       default:
         return new WWatchdogExtractorCorruptedArray($decoded, "the struct's version number, " . $decoded['version'] . ', is unknown to us');
     }

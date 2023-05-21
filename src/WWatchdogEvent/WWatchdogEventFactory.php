@@ -116,7 +116,15 @@ class WWatchdogEventFactory {
       'message' => $message,
       'level' => $level,
       'context' => $context,
-    ], $this->time->getRequestTime());
+    ], $this->time->getRequestTime(), $this->backtrace());
+  }
+
+  public function backtrace() : array {
+    $ret = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+    for ($i = 0; $i < 6; $i++) {
+      array_shift($ret);
+    }
+    return $ret;
   }
 
   /**

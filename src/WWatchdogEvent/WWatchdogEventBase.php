@@ -232,14 +232,25 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   }
 
   /**
+   * Get the backtrace, if available.
+   *
+   * @return array
+   *   The backtrace.
+   */
+  public function backtrace() : array {
+    return $this->extractArray('backtrace', []);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function toArray() : array {
     $return = [];
 
-    $return['version'] = '2';
+    $return['version'] = '3';
     $return['class'] = get_class($this);
     $return['timestamp'] = $this->timestamp();
+    $return['backtrace'] = $this->backtrace();
 
     foreach ($this->dataKeyValidators() as $key => $validate) {
       $return[$key] = $this->$key;

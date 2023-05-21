@@ -57,4 +57,12 @@ interface WWatchdogEventInterface {
    */
   public function toArray() : array;
 
+  /**
+   * Get the backtrace, if available.
+   *
+   * @return array
+   *   The backtrace.
+   */
+  public function backtrace() : array;
+
 }

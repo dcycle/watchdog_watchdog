@@ -28,4 +28,14 @@ class WWatchdogExtractorV1 extends WWatchdogExtractorBase {
     return 0;
   }
 
+  /**
+   * Get the backtrace, if available.
+   *
+   * @return array
+   *   The backtrace.
+   */
+  public function backtrace() : array {
+    return [];
+  }
+
 }
