@@ -12,9 +12,11 @@ interface ExpectationInterface {
    *
    * @param array $requirements
    *   A requirements array.
+   * @param array $backtrace
+   *   A backtrace associated with this error.
    * @param callable $callback
    *   A logging callback.
    */
-  public function check(array $requirements, callable $callback);
+  public function check(array $requirements, array $backtrace, callable $callback);
 
 }

@@ -14,7 +14,7 @@ class WWatchdogExtractorV1 extends WWatchdogExtractorBase {
    */
   public function extract() : WWatchdogEventInterface {
     $decoded = $this->decoded;
-    return new $decoded['class']($decoded, $this->timestamp());
+    return new $decoded['class']($decoded, $this->timestamp(), $this->backtrace());
   }
 
   /**
@@ -26,6 +26,16 @@ class WWatchdogExtractorV1 extends WWatchdogExtractorBase {
   public function timestamp() : int {
     // In version 1 we we are not storing the timestamp.
     return 0;
+  }
+
+  /**
+   * Get the backtrace, if available.
+   *
+   * @return array
+   *   The backtrace.
+   */
+  public function backtrace() : array {
+    return [];
   }
 
 }

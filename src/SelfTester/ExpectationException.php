@@ -14,4 +14,11 @@ class ExpectationException extends Expectation {
     return 2;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function expectedCallingFunction() : string {
+    return 'error';
+  }
+
 }

@@ -14,4 +14,11 @@ class ExpectationNothingToReport extends Expectation {
     return 0;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function expectedCallingFunction() : string {
+    return '';
+  }
+
 }
