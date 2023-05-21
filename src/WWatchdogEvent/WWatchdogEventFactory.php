@@ -132,6 +132,14 @@ class WWatchdogEventFactory {
     for ($i = 0; $i < self::LEVELS_OF_BACKTRACE_USED_BY_LOGGING_MECHANISM; $i++) {
       array_shift($ret);
     }
+    // I have found that debub_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) does not
+    // systematically remove args. I have not been able to reproduce it outside
+    // Drupal, but to reproduce this within Drpual you can uncomment the
+    // following lines and run:
+    // drush ev 'print_r(watchdog_watchdog()->eventFactory()->backtrace());'.
+    foreach (array_keys($ret) as $index) {
+      unset($ret[$index]['args']);
+    }
     return $ret;
   }
 
