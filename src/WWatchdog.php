@@ -7,6 +7,7 @@ use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
 use Drupal\Core\State\State;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 use Drupal\watchdog_watchdog\WWatchdogDisplayer\WWatchdogCommandLineDisplayer;
 
 /**
@@ -15,6 +16,7 @@ use Drupal\watchdog_watchdog\WWatchdogDisplayer\WWatchdogCommandLineDisplayer;
 class WWatchdog {
 
   use StringTranslationTrait;
+  use DependencyInjectionTrait;
 
   /**
    * The injected State service.
