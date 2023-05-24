@@ -37,6 +37,6 @@ abstract class WWatchdogPluginBase extends PluginBase implements WWatchdogPlugin
   /**
    * {@inheritdoc}
    */
-  public function trips(WWatchdogEventInterface $event, bool &$opinion) {}
+  public function triggersError(WWatchdogEventInterface $event, bool &$opinion) {}
 
 }

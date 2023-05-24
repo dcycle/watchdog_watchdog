@@ -71,14 +71,11 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   }
 
   /**
-   * Get the timestamp associated with this event, in human-readable form.
-   *
-   * @return string
-   *   Timestamp associated with this event, in human-readable form.
+   * {@inheritdoc}
    */
   public function humanTime() : string {
     $candidate = $this->timestamp();
-    return $candidate ? date("Y-m-d h:i:sa", $candidate) : $this->t('Unknown time');
+    return $candidate ? date("Y-m-d h:i:sa", $candidate) . " UTC" : $this->t('Unknown time');
   }
 
   /**

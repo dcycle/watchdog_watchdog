@@ -67,7 +67,9 @@ class WWatchdogPluginCollection implements WWatchdogPluginInterface, \Countable 
    * {@inheritdoc}
    */
   public function formAlter(array &$form) {
-    $this->callOnPlugins('formAlter', [$form]);
+    // See https://stackoverflow.com/a/295020/1207752.
+    $args = [&$form];
+    $this->callOnPlugins('formAlter', $args);
   }
 
   /**

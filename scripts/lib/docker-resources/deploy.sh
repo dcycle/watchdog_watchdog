@@ -19,7 +19,7 @@ do
   fi
 done
 
-drush si -y --db-url "mysql://root:drupal@mysql/drupal" minimal
+drush site:install -y --db-url "mysql://root:drupal@mysql/drupal"
 cat /var/www/html/modules/custom/watchdog_watchdog/scripts/lib/docker-resources/dev-settings.txt >> /var/www/html/sites/default/settings.php
 
 drush en -y \
