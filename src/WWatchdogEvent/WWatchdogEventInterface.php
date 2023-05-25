@@ -16,6 +16,14 @@ interface WWatchdogEventInterface {
   public function encode() : string;
 
   /**
+   * Get the timestamp associated with this event, in human-readable form.
+   *
+   * @return string
+   *   Timestamp associated with this event, in human-readable form.
+   */
+  public function humanTime() : string;
+
+  /**
    * Whether or not this event should report an error in the requirements.
    *
    * @return bool

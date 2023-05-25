@@ -8,12 +8,16 @@ services:
     image: dummy_image_required
     volumes:
       - ".:/var/www/html/modules/custom/watchdog_watchdog"
+      - files:/var/www/html/sites/default/files
     working_dir: /var/www/html
 
   webserver:
     build:
       context: .
       dockerfile: Dummy_Dockerfile_required
+    volumes:
+      - ".:/var/www/html/modules/custom/watchdog_watchdog"
+      - files:/var/www/html/sites/default/files
     ports:
       - "80"
     links:
@@ -32,6 +36,9 @@ services:
       MYSQL_DATABASE: drupal
       MYSQL_ROOT_PASSWORD: drupal
       MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+
+volumes:
+  files:
 
 # Specifying the network name makes it predictable on all environments,
 # for example when we run browser tests.
