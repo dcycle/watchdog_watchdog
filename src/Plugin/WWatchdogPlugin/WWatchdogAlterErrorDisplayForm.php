@@ -2,7 +2,6 @@
 
 namespace Drupal\watchdog_watchdog\Plugin\WWatchdogPlugin;
 
-use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
 use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginBase;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -27,13 +26,13 @@ class WWatchdogAlterErrorDisplayForm extends WWatchdogPluginBase {
   public function formAlter(array &$form) {
     $lastEvent = $this->wWatchdog()->lastEvent();
     $errorExists = $lastEvent->report();
-    $form['advanced'] = array(
+    $form['advanced'] = [
       '#type' => 'details',
       '#title' => $errorExists ? $this->t('Watchdog Watchdog has intercepted an error on @time', [
         '@time' => $lastEvent->humanTime(),
       ]) : $this->t('Watchdog Watchdog has not intercepted any errors'),
       '#open' => FALSE,
-    );
+    ];
     $form['advanced']['description'] = [
       '#type' => 'markup',
       '#markup' => $lastEvent->requirementsValue(),
@@ -47,35 +46,53 @@ class WWatchdogAlterErrorDisplayForm extends WWatchdogPluginBase {
    * Return an event backtrace in the form of a form api table.
    */
   public function backtrace(array $backtrace) : array {
-    $ret = array(
+    $ret = [
       '#type' => 'table',
-      '#caption' => $this
-        ->t('Sample Table'),
-      '#header' => array(
-        $this
-          ->t('Name'),
-        $this
-          ->t('Phone'),
-      ),
-    );
-    for ($i = 1; $i <= 4; $i++) {
-      $ret[$i]['name'] = array(
+      '#caption' => $this->t('Backtrace. To reset, run drush ev "watchdog_watchdog()->reset()"'),
+      '#header' => [
+        $this->t('File'),
+        $this->t('Line'),
+        $this->t('Function'),
+      ],
+    ];
+    $i = 0;
+    foreach ($backtrace as $line) {
+      $ret[++$i]['file'] = [
         '#type' => 'markup',
-        '#markup' => $this
-          ->t('Name'),
-      );
-      $ret[$i]['phone'] = array(
+        '#markup' => $this->get(['file'], $line),
+      ];
+      $ret[$i]['line'] = [
         '#type' => 'markup',
-        '#markup' => $this
-          ->t('Phone'),
-      );
+        '#markup' => $this->get(['line'], $line),
+      ];
+      $ret[$i]['function'] = [
+        '#type' => 'markup',
+        '#markup' => $this->get(['class', 'function'], $line),
+      ];
     }
     return $ret;
+  }
 
-    return [
-      '#type' => 'table',
-      '#markup' => $lastEvent->requirementsValue(),
-    ];
+  /**
+   * Get values from an error line.
+   *
+   * @param array $keys
+   *   The keys you want to get, for exmample class and function. These will
+   *   be separated by a colon in the return.
+   * @param array $line
+   *   A line which comes from php's debug_backtrace().
+   *
+   * @return string
+   *   The value of the keys, or "n/a".
+   */
+  public function get(array $keys, array $line) : string {
+    $ret = [];
+    foreach ($keys as $key) {
+      if (array_key_exists($key, $line)) {
+        $ret[] = $line[$key];
+      }
+    }
+    return $ret ? implode(':', $ret) : $this->t('n/a');
   }
 
 }

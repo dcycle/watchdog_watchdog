@@ -61,8 +61,11 @@ class WWatchdog {
   public function hookRequirements() : array {
     $requirements['watchdog_watchdog'] = [
       'title' => $this->t('Watchdog Watchdog first reported error'),
-      'description' => $this->t('If any error occurs during operation of your site, it will be reported here. Further errors are not reported. You can reset watchdog_watchdog by running drush ev "watchdog_watchdog()->reset();"'),
-      'value' => $this->lastEvent()->requirementsValue(),
+      'value' => $this->lastEvent()->report() ? $this->t('An error has been intercepted') : $this->t('No error has been intercepted'),
+      'description' => [
+        '#type' => 'markup',
+        '#markup' => $this->t('If any error occurs during operation of your site, it will be reported here. Further errors are not reported. You can reset watchdog_watchdog by running drush ev "watchdog_watchdog()->reset();"') . ' ' . $this->lastEvent()->requirementsValue(),
+      ],
       'severity' => $this->lastEvent()->requirementsSeverity(),
     ];
 

@@ -5,6 +5,7 @@ namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
+use Drupal\watchdog_watchdog\Utilities\Utilities;
 
 /**
  * Represents a watchdog event.
@@ -13,6 +14,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
 
   use StringTranslationTrait;
   use DependencyInjectionTrait;
+  use Utilities;
 
   /**
    * The timestamp of this event.
@@ -151,7 +153,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
     $noErrorString = $this->t('Nothing to report');
     $candidate = new FormattableMarkup($this->extractString('message', $noErrorString), $this->requirementsContext());
     if ($candidate != $noErrorString) {
-      $candidate = $this->humanTime() . ' ' . $candidate;
+      $candidate = $this->humanTime() . ' ' . $candidate . ' ' . $this->link($this->t('Get details'), 'system.logging_settings');
     }
     return $candidate;
   }
