@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\watchdog_watchdog\Unit;
 
-use PHPUnit\Framework\TestCase;
 use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventBase;
 use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Base class for testing.

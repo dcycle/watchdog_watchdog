@@ -2,13 +2,13 @@
 
 namespace Drupal\watchdog_watchdog;
 
-use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventFactory;
-use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
-use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
 use Drupal\Core\State\State;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 use Drupal\watchdog_watchdog\WWatchdogDisplayer\WWatchdogCommandLineDisplayer;
+use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventFactory;
+use Drupal\watchdog_watchdog\WWatchdogEvent\WWatchdogEventInterface;
+use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
 
 /**
  * WWatchdog singleton. Use \Drupal::service('watchdog_watchdog').

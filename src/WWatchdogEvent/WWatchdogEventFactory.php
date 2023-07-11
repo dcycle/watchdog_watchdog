@@ -3,8 +3,8 @@
 namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
 use Drupal\Component\Datetime\Time;
-use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
+use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginCollection;
 
 /**
  * Implements the factory pattern for events.

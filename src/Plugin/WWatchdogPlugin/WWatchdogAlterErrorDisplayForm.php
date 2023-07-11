@@ -2,9 +2,9 @@
 
 namespace Drupal\watchdog_watchdog\Plugin\WWatchdogPlugin;
 
-use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginBase;
-use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
+use Drupal\watchdog_watchdog\WWatchdogPlugin\WWatchdogPluginBase;
 
 /**
  * Displays the latest event information on /admin/config/development/logging.

@@ -2,8 +2,8 @@
 
 namespace Drupal\watchdog_watchdog\WWatchdogEvent;
 
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\watchdog_watchdog\Utilities\DependencyInjectionTrait;
 use Drupal\watchdog_watchdog\Utilities\Utilities;
 
