@@ -2,9 +2,9 @@
 
 namespace Drupal\watchdog_watchdog\SelfTester;
 
-use Drupal\watchdog_watchdog\WWatchdog;
-use Drupal\Core\Utility\Error;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Utility\Error;
+use Drupal\watchdog_watchdog\WWatchdog;
 
 /**
  * Run tests on a running environment.
