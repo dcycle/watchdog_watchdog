@@ -48,7 +48,7 @@ class WWatchdogAdminForm {
    *   The form object.
    */
   public function addValidateHandler(array &$form) {
-    $form['#validate'][] = 'watchdog_watchdog_validate_handler';
+    $form['#validate'][] = 'watchdog_watchdog_validation_handler';
   }
 
   /**
