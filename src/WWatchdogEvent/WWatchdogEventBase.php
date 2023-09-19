@@ -17,6 +17,16 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
   use Utilities;
 
   /**
+   * Keys which should exist in the data.
+   *
+   * For example, system events and Throwable events should contain different
+   * keys.
+   *
+   * @var array
+   */
+  protected $keyValidators;
+
+  /**
    * The timestamp of this event.
    *
    * @var int
@@ -51,7 +61,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
       if (!$validate($data[$key])) {
         throw new \Exception('Data value does not validate for ' . $key);
       }
-      $this->$key = $data[$key];
+      $this->keyValidators[$key] = $data[$key];
     }
   }
 
@@ -262,7 +272,7 @@ class WWatchdogEventBase implements WWatchdogEventInterface {
     $return['backtrace'] = $this->backtrace();
 
     foreach ($this->dataKeyValidators() as $key => $validate) {
-      $return[$key] = $this->$key;
+      $return[$key] = $this->keyValidators[$key];
       if (!$validate($return[$key])) {
         throw new \Exception('Data value does not validate for ' . $key);
       }
